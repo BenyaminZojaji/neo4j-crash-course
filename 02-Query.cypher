@@ -76,8 +76,8 @@ LIMIT 3
 MATCH (player:PLAYER) 
 WHERE player.height >= 2
 RETURN player
-SKIP 1
 ORDER BY player.height DESC
+SKIP 1
 LIMIT 3
 
 
@@ -116,17 +116,17 @@ RETURN teammate
 ////////////////////////////////////////////////////////////
 
 // GET PLAYERS AND NUMBER OF GAMES PLAYED //
-MATCH (player:PLAYER) - [gamePlayed:PLAYED_AGAINST] - (team:TEAM)
+MATCH (player:PLAYER) - [gamePlayed:PLAYED_AGAINST] -> (team:TEAM)
 RETURN player.name, COUNT(gamePlayed)
 
 // GET PLAYERS AND POINTS PER GAME //
-MATCH (player:PLAYER) - [gamePlayed:PLAYED_AGAINST] - (team:TEAM)
+MATCH (player:PLAYER) - [gamePlayed:PLAYED_AGAINST] -> (team:TEAM)
 RETURN player.name, AVG(gamePlayed.points)
 
 
 // GET HIGHEST SCORING PLAYER IN THE LAKERS //
 MATCH (player:PLAYER) - [:PLAYS_FOR] - (:TEAM {name: "LA Lakers"})
-MATCH (player) - [gamePlayed:PLAYED_AGAINST] - (:TEAM)
+MATCH (player) - [gamePlayed:PLAYED_AGAINST] -> (:TEAM)
 RETURN player.name, AVG(gamePlayed.points) AS ppg
 ORDER BY ppg DESC
 LIMIT 1
